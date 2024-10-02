@@ -1,32 +1,30 @@
 {
     "$id": "...TODO",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "definitions": {
-        "KGraphElement": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": [
-                        {
-                            "$ref": "#/definitions/KGraphData"
-                        }
-                    ]
-                },
-                "properties": {
-                    "type": "object"
-                },
-                "parent": {
-                    "$ref": "#/definitions/KGraphElement"
-                },
-                "type": {
-                    "type": "string"
+    "title": "KGraphElement",
+    "type": "object",
+    "properties": {
+        "data": {
+            "type": "array",
+            "items": [
+                {
+                    "$ref": "#/definitions/KGraphData"
                 }
-            }
+            ]
         },
+        "properties": {
+            "type": "object"
+        },
+        "parent": {
+            "$ref": "#"
+        },
+        "type": {
+            "type": "string"
+        }
+    },
+    "definitions": {
         "KLabeledGraphElement": {
-            "type": "object",
-            "allOf": [{"$ref": "#/definitions/KGraphElement"}],
+            "allOf": [{"$ref": "#"}],
             "properties": {
                 "labels": {
                     "type": "array",
@@ -39,8 +37,7 @@
             }
         },
         "KLabel": {
-            "type": "object",
-            "allOf": [{"$ref": "#/definitions/KGraphElement"}],
+            "allOf": [{"$ref": "#"}],
             "properties": {
                 "text": {
                     "type": "string"
@@ -52,7 +49,6 @@
             }
         },
         "KNode": {
-            "type": "object",
             "allOf": [{"$ref": "#/definitions/KLabeledGraphElement"}],
             "properties": {
                 "children": {
@@ -94,20 +90,13 @@
             }
         },
         "KEdge": {
-            "type": "object",
-            "allOf": [{"$ref": "#/definitions/KGraphElement"}],
+            "allOf": [{"$ref": "#"}],
             "properties": {
-                "source": {
-                    "$ref": "#/definitions/KNode"
+                "sourceId": {
+                    "type": "string"
                 },
-                "target": {
-                    "$ref": "#/definitions/KNode"
-                },
-                "source_port": {
-                    "$ref": "#/definitions/KPort"
-                },
-                "target_port": {
-                    "$ref": "#/definitions/KPort"
+                "targetId": {
+                    "type": "string"
                 },
                 "type": {
                     "type": "string",
@@ -116,7 +105,6 @@
             }
         },
         "KPort": {
-            "type": "object",
             "allOf": [{"$ref": "#/definitions/KLabeledGraphElement"}],
             "properties": {
                 "edges": {
@@ -134,7 +122,6 @@
             }
         },
         "KGraphData": {
-            "type": "object",
             "properties": {
                 "properties": {
                     "type": "object"
@@ -142,7 +129,6 @@
             }
         },
         "KRendering": {
-        "type": "object",
             "allOf": [{"$ref": "#/definitions/KGraphData"}],
             "properties": {
                 "parent": {
@@ -164,7 +150,6 @@
             }
         }, 
         "KContainerRendering": {
-            "type": "object",
             "allOf": [{"$ref": "#/definitions/KRendering"}],
             "properties": {
                 "children": {
@@ -184,7 +169,6 @@
             }
         },
         "KRectangle": {
-        "type": "object",
             "allOf": [{"$ref": "#/definitions/KContainerRendering"}],
             "properties": {
                 "type": {
@@ -194,31 +178,65 @@
             }
         },
         "KRoundedRectangle": {
-
+            "allOf": [{"$ref": "#/definitions/KRectangle"}],
+            "properties": {
+                "cornerWidth": {
+                    "type": "number"
+                },
+                "cornerHeight": {
+                    "type": "number"
+                }
+            }
         },
         "KPolyline": {
-
+            "allOf": [{"$ref": "#/definitions/KContainerRendering"}]
         },
         "KPolygon": {
-
+            "allOf": [{"$ref": "#/definitions/KPolyline"}]
         },
         "KSpline": {
-
+            "allOf": [{"$ref": "#/definitions/KPolyline"}]
         },
         "KImage": {
-
+            "allOf": [{"$ref": "#/definitions/KContainerRendering"}],
+            "properties": {
+                "bundleName": {
+                    "type": "string"
+                },
+                "imagePath": {
+                    "type": "string"
+                }
+            }
         },
         "KEllipse": {
-
+            "allOf": [{"$ref": "#/definitions/KContainerRendering"}]
         },
         "KArc": {
-
+            "allOf": [{"$ref": "#/definitions/KContainerRendering"}],
+            "properties": {
+                "startAngle": {
+                    "type": "number"
+                },
+                "arcAngle": {
+                    "type": "number"
+                }
+            }
         },
         "KText": {
-
+            "allOf": [{"$ref": "#/definitions/KContainerRendering"}],
+            "properties": {
+                "text": {
+                    "type": "string"
+                },
+                "clip": {
+                    "type": "boolean"
+                }
+            }
         },
         "KPlacementData": {
-
+            "properties": {
+                
+            }
         }
     }
 }
