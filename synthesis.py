@@ -1,3 +1,5 @@
+from graph_library import addProperty, createEdge, createLabel, createNode
+from rendering_library import addPolyline, addRectangle
 from synthesis_options import SynthesisOption, SynthesisOptionType
 
 
@@ -14,4 +16,33 @@ class PlyghdKgraphSynthesis:
         return [COLOR, LABELS]
     
     def transform(self, graph):
-        pass
+        # for now, hard-code a new graph.
+
+        root = createNode()
+
+        n = createNode(root)
+        m = createNode(root)
+        o = createNode(root)
+
+        addProperty(n, "nodeSize.constraints", [2])
+        addProperty(n, "nodeLabels.placement," [1, 4, 6])
+        addProperty(m, "nodeSize.constraints", [2])
+        addProperty(m, "nodeLabels.placement," [1, 4, 6])
+        addProperty(o, "nodeSize.constraints", [2])
+        addProperty(o, "nodeLabels.placement," [1, 4, 6])
+
+        nRect = addRectangle(n)
+        mRect = addRectangle(m)
+        oRect = addRectangle(o)
+
+        nLabel = createLabel(n, "nnnn")
+        mLabel = createLabel(m, "m")
+        oLabel = createLabel(o, "o")
+
+        nmEdge = createEdge(n, m)
+        noEdge = createEdge(n, o)
+        
+        addPolyline(nmEdge)
+        addPolyline(noEdge)
+
+        return root
