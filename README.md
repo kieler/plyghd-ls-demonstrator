@@ -15,3 +15,8 @@ python ls.py
 
 ## Connecting with a client
 TODO: how to start klighd-cli
+
+## Generating the KGraph data structure from schema
+```
+datamodel-codegen --input KGraphSchema.json --input-file-type jsonschema --output kgraph.py
+```
