@@ -47,7 +47,7 @@
                 },
                 "type": {
                     "type": "string",
-                    "const": "label"
+                    "default": "label"
                 }
             }
         },
@@ -89,7 +89,7 @@
                 },
                 "type": {
                     "type": "string",
-                    "const": "node"
+                    "default": "node"
                 }
             }
         },
@@ -111,7 +111,7 @@
                 },
                 "type": {
                     "type": "string",
-                    "const": "edge"
+                    "default": "edge"
                 }
             }
         },
@@ -129,7 +129,7 @@
                 },
                 "type": {
                     "type": "string",
-                    "const": "port"
+                    "default": "port"
                 }
             }
         },
@@ -159,7 +159,7 @@
                 },
                 "type": {
                     "type": "string",
-                    "const": "KRenderingImpl"
+                    "default": "KRenderingImpl"
                 }
             }
         }, 
@@ -179,7 +179,7 @@
                 },
                 "type": {
                     "type": "string",
-                    "const": "KContainerRenderingImpl"
+                    "default": "KContainerRenderingImpl"
                 }
             }
         },
@@ -189,7 +189,7 @@
             "properties": {
                 "type": {
                     "type": "string",
-                    "const": "KRectangleImpl"
+                    "default": "KRectangleImpl"
                 }
             }
         },
