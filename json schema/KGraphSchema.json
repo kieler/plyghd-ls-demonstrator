@@ -1,0 +1,224 @@
+{
+    "$id": "...TODO",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "KGraphElement": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "#/definitions/KGraphData"
+                        }
+                    ]
+                },
+                "properties": {
+                    "type": "object"
+                },
+                "parent": {
+                    "$ref": "#/definitions/KGraphElement"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "KLabeledGraphElement": {
+            "type": "object",
+            "allOf": [{"$ref": "#/definitions/KGraphElement"}],
+            "properties": {
+                "labels": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        },
+        "KLabel": {
+            "type": "object",
+            "allOf": [{"$ref": "#/definitions/KGraphElement"}],
+            "properties": {
+                "text": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "const": "label"
+                }
+            }
+        },
+        "KNode": {
+            "type": "object",
+            "allOf": [{"$ref": "#/definitions/KLabeledGraphElement"}],
+            "properties": {
+                "children": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "#/definitions/KNode"
+                        }
+                    ]
+                },
+                "outgoing_edges": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "#/definitions/KEdge"
+                        }
+                    ]
+                },
+                "incoming_edges": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "#/definitions/KEdge"
+                        }
+                    ]
+                },
+                "ports": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "#/definitions/KPort"
+                        }
+                    ]
+                },
+                "type": {
+                    "type": "string",
+                    "const": "node"
+                }
+            }
+        },
+        "KEdge": {
+            "type": "object",
+            "allOf": [{"$ref": "#/definitions/KGraphElement"}],
+            "properties": {
+                "source": {
+                    "$ref": "#/definitions/KNode"
+                },
+                "target": {
+                    "$ref": "#/definitions/KNode"
+                },
+                "source_port": {
+                    "$ref": "#/definitions/KPort"
+                },
+                "target_port": {
+                    "$ref": "#/definitions/KPort"
+                },
+                "type": {
+                    "type": "string",
+                    "const": "edge"
+                }
+            }
+        },
+        "KPort": {
+            "type": "object",
+            "allOf": [{"$ref": "#/definitions/KLabeledGraphElement"}],
+            "properties": {
+                "edges": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "$ref": "#/definitions/KEdge"
+                        }
+                    ]
+                },
+                "type": {
+                    "type": "string",
+                    "const": "port"
+                }
+            }
+        },
+        "KGraphData": {
+            "type": "object",
+            "properties": {
+                "properties": {
+                    "type": "object"
+                }
+            }
+        },
+        "KRendering": {
+        "type": "object",
+            "allOf": [{"$ref": "#/definitions/KGraphData"}],
+            "properties": {
+                "parent": {
+                    "$ref": "#/definitions/KRendering"
+                },
+                "placementData": {
+                    "$ref": "#/definitions/KPlacementData"
+                },
+                "styles": {
+                    "type": "array"
+                },
+                "actions": {
+                    "type": "array"
+                },
+                "type": {
+                    "type": "string",
+                    "const": "KRenderingImpl"
+                }
+            }
+        }, 
+        "KContainerRendering": {
+            "type": "object",
+            "allOf": [{"$ref": "#/definitions/KRendering"}],
+            "properties": {
+                "children": {
+                    "type": "array",
+                    "items": [
+                        {"$ref": "#/definitions/KRendering"}
+                    ]
+                
+                },
+                "childPlacement": {
+                    
+                },
+                "type": {
+                    "type": "string",
+                    "const": "KContainerRenderingImpl"
+                }
+            }
+        },
+        "KRectangle": {
+        "type": "object",
+            "allOf": [{"$ref": "#/definitions/KContainerRendering"}],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "KRectangleImpl"
+                }
+            }
+        },
+        "KRoundedRectangle": {
+
+        },
+        "KPolyLine": {
+
+        },
+        "KPolygon": {
+
+        },
+        "KSpline": {
+
+        },
+        "KImage": {
+
+        },
+        "KEllipse": {
+
+        },
+        "KArc": {
+
+        },
+        "KText": {
+
+        },
+        "KPlacementData": {
+
+        }
+    }
+}
