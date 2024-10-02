@@ -1,1 +1,3 @@
 pygls
+pydantic
+datamodel-code-generator
