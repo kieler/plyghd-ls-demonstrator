@@ -66,9 +66,11 @@ def accept(ls: KlighdLanguageServer, *args):
     options = {"requestModel": requestModel}
 
     try:
-        options[args[0].action.kind](args[0].action)
+        function = options[args[0].action.kind]
     except:
         print("action kind not supported yet: " + args[0].action.kind)
+        return
+    function(args[0].action)
     
 
 model_uri = ""

@@ -14,7 +14,8 @@ class KGraphData(BaseModel):
 
 
 class KPlacementData(BaseModel):
-    __root__: Any
+    # __root__: Any
+    pass
 
 
 class KGraphElement(BaseModel):

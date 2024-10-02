@@ -25,11 +25,11 @@ class PlyghdKgraphSynthesis:
         o = createNode(root)
 
         addProperty(n, "nodeSize.constraints", [2])
-        addProperty(n, "nodeLabels.placement," [1, 4, 6])
+        addProperty(n, "nodeLabels.placement,", [1, 4, 6])
         addProperty(m, "nodeSize.constraints", [2])
-        addProperty(m, "nodeLabels.placement," [1, 4, 6])
+        addProperty(m, "nodeLabels.placement,", [1, 4, 6])
         addProperty(o, "nodeSize.constraints", [2])
-        addProperty(o, "nodeLabels.placement," [1, 4, 6])
+        addProperty(o, "nodeLabels.placement,", [1, 4, 6])
 
         nRect = addRectangle(n)
         mRect = addRectangle(m)
