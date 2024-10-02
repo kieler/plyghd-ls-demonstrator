@@ -10,7 +10,8 @@ from pydantic import BaseModel, Field
 
 
 class Model(BaseModel):
-    __root__: Any
+    # __root__: Any
+    pass
 
 
 class KGraphData(BaseModel):
@@ -18,39 +19,48 @@ class KGraphData(BaseModel):
 
 
 class KRoundedRectangle(BaseModel):
-    __root__: Any
+    # __root__: Any
+    pass
 
 
-class KPolyLine(BaseModel):
-    __root__: Any
+class KPolyline(BaseModel):
+    # __root__: Any
+    pass
 
 
 class KPolygon(BaseModel):
-    __root__: Any
+    # __root__: Any
+    pass
 
 
 class KSpline(BaseModel):
-    __root__: Any
+    # __root__: Any
+    pass
 
 
 class KImage(BaseModel):
-    __root__: Any
+    # __root__: Any
+    pass
 
 
 class KEllipse(BaseModel):
-    __root__: Any
+    # __root__: Any
+    pass
 
 
 class KArc(BaseModel):
-    __root__: Any
+    # __root__: Any
+    pass
 
 
 class KText(BaseModel):
-    __root__: Any
+    # __root__: Any
+    pass
 
 
 class KPlacementData(BaseModel):
-    __root__: Any
+    # __root__: Any
+    pass
 
 
 class KGraphElement(BaseModel):
@@ -66,7 +76,7 @@ class KLabeledGraphElement(KGraphElement):
 
 class KLabel(KGraphElement):
     text: Optional[str] = None
-    type: str = Field('label', const=True)
+    type: str = Field('label', Literal=True)
 
 
 class KRendering(KGraphData):
@@ -74,17 +84,17 @@ class KRendering(KGraphData):
     placementData: Optional[KPlacementData] = None
     styles: Optional[List] = None
     actions: Optional[List] = None
-    type: str = Field('KRenderingImpl', const=True)
+    type: str = Field('KRenderingImpl', Literal=True)
 
 
 class KContainerRendering(KRendering):
     children: Optional[List[KRendering]] = None
     childPlacement: Optional[Any] = None
-    type: str = Field('KContainerRenderingImpl', const=True)
+    type: str = Field('KContainerRenderingImpl', Literal=True)
 
 
 class KRectangle(KContainerRendering):
-    type: str = Field('KRectangleImpl', const=True)
+    type: str = Field('KRectangleImpl', Literal=True)
 
 
 class KNode(KLabeledGraphElement):
@@ -92,7 +102,7 @@ class KNode(KLabeledGraphElement):
     outgoing_edges: Optional[List[KEdge]] = None
     incoming_edges: Optional[List[KEdge]] = None
     ports: Optional[List[KPort]] = None
-    type: str = Field('node', const=True)
+    type: str = Field('node', Literal=True)
 
 
 class KEdge(KGraphElement):
@@ -100,12 +110,12 @@ class KEdge(KGraphElement):
     target: Optional[KNode] = None
     source_port: Optional[KPort] = None
     target_port: Optional[KPort] = None
-    type: str = Field('edge', const=True)
+    type: str = Field('edge', Literal=True)
 
 
 class KPort(KLabeledGraphElement):
     edges: Optional[List[KEdge]] = None
-    type: str = Field('port', const=True)
+    type: str = Field('port', Literal=True)
 
 
 KGraphElement.update_forward_refs()
