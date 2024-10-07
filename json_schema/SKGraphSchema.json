@@ -1,7 +1,7 @@
 {
     "$id": "...TODO",
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "KGraphElement",
+    "title": "SKElement",
     "type": "object",
     "properties": {
         "data": {
@@ -15,29 +15,59 @@
         "properties": {
             "type": "object"
         },
-        "parent": {
-            "$ref": "#"
-        },
         "type": {
             "type": "string"
         }
     },
     "definitions": {
-        "KLabeledGraphElement": {
-            "allOf": [{"$ref": "#"}],
+        "SModelElement": {
+            "type": "object",
             "properties": {
-                "labels": {
+                "type": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "children": {
                     "type": "array",
                     "items": [
                         {
-                            "type": "string"
+                            "$ref": "#/definitions/SModelElement"
                         }
                     ]
+                },
+                "trace": {
+                    "type": "string"
                 }
             }
         },
-        "KLabel": {
-            "allOf": [{"$ref": "#"}],
+        "SShapeElement": {
+            "allOf": [{"$ref": "#/definitions/SModelElement"}],
+            "properties": {
+                "position": {
+                    "type": "object"
+                },
+                "size": {
+                    "type": "object"
+                },
+                "layoutOptions": {
+                    "type": "object"
+                }
+            }
+            
+        },
+        "SKNode": {
+            "allOf": [{"$ref": "#"}, {"$ref": "#/definitions/SShapeElement"}],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "default": "node"
+                }
+            }
+        },
+        "SKLabel": {
+            "allOf": [{"$ref": "#"}, {"$ref": "#/definitions/SModelElement"}],
             "properties": {
                 "text": {
                     "type": "string"
@@ -48,49 +78,8 @@
                 }
             }
         },
-        "KNode": {
-            "allOf": [{"$ref": "#/definitions/KLabeledGraphElement"}],
-            "properties": {
-                "children": {
-                    "type": "array",
-                    "items": [
-                        {
-                            "$ref": "#/definitions/KNode"
-                        }
-                    ]
-                },
-                "outgoing_edges": {
-                    "type": "array",
-                    "items": [
-                        {
-                            "$ref": "#/definitions/KEdge"
-                        }
-                    ]
-                },
-                "incoming_edges": {
-                    "type": "array",
-                    "items": [
-                        {
-                            "$ref": "#/definitions/KEdge"
-                        }
-                    ]
-                },
-                "ports": {
-                    "type": "array",
-                    "items": [
-                        {
-                            "$ref": "#/definitions/KPort"
-                        }
-                    ]
-                },
-                "type": {
-                    "type": "string",
-                    "default": "node"
-                }
-            }
-        },
-        "KEdge": {
-            "allOf": [{"$ref": "#"}],
+        "SKEdge": {
+            "allOf": [{"$ref": "#"}, {"$ref": "#/definitions/SModelElement"}],
             "properties": {
                 "sourceId": {
                     "type": "string"
@@ -104,17 +93,9 @@
                 }
             }
         },
-        "KPort": {
-            "allOf": [{"$ref": "#/definitions/KLabeledGraphElement"}],
+        "SKPort": {
+            "allOf": [{"$ref": "#"}, {"$ref": "#/definitions/SShapeElement"}],
             "properties": {
-                "edges": {
-                    "type": "array",
-                    "items": [
-                        {
-                            "$ref": "#/definitions/KEdge"
-                        }
-                    ]
-                },
                 "type": {
                     "type": "string",
                     "default": "port"
