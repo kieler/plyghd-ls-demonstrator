@@ -18,5 +18,5 @@ TODO: how to start klighd-cli
 
 ## Generating the KGraph data structure from schema
 ```
-datamodel-codegen --input KGraphSchema.json --input-file-type jsonschema --output kgraph.py
+datamodel-codegen --input SKGraphSchema.json --input-file-type jsonschema --output skgraph.py
 ```

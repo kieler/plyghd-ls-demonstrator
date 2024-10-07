@@ -1,4 +1,4 @@
-from json_schema.kgraph import *
+from json_schema.skgraph import *
 def addRectangle(element):
     rectangle = KRectangle()
     if (element.data == None):
@@ -12,3 +12,11 @@ def addPolyline(element):
         element.data = []
     element.data.append(polyline)
     return polyline
+
+def addText(element, theText):
+    text = KText()
+    text.text = theText
+    if (element.data == None):
+        element.data = []
+    element.data.append(text)
+    return text

@@ -1,4 +1,4 @@
-from graph_library import addProperty, createEdge, createLabel, createNode
+from graph_library import addProperty, createEdge, createLabel, createNode, createGraph
 from rendering_library import addPolyline, addRectangle
 from synthesis_options import SynthesisOption, SynthesisOptionType
 
@@ -15,21 +15,22 @@ class PlyghdKgraphSynthesis:
     def getDisplayedSynthesisOptions(self):
         return [COLOR, LABELS]
     
-    def transform(self, graph):
+    def transform(self, uri):
         # for now, hard-code a new graph.
+        graph = createGraph(uri)
 
-        root = createNode()
+        root = createNode(graph)
 
         n = createNode(root)
         m = createNode(root)
         o = createNode(root)
 
-        addProperty(n, "nodeSize.constraints", [2])
-        addProperty(n, "nodeLabels.placement,", [1, 4, 6])
-        addProperty(m, "nodeSize.constraints", [2])
-        addProperty(m, "nodeLabels.placement,", [1, 4, 6])
-        addProperty(o, "nodeSize.constraints", [2])
-        addProperty(o, "nodeLabels.placement,", [1, 4, 6])
+        addProperty(n, "org.eclipse.elk.nodeSize.constraints", [2])
+        addProperty(n, "org.eclipse.elk.nodeLabels.placement", [1, 4, 6])
+        addProperty(m, "org.eclipse.elk.nodeSize.constraints", [2])
+        addProperty(m, "org.eclipse.elk.nodeLabels.placement", [1, 4, 6])
+        addProperty(o, "org.eclipse.elk.nodeSize.constraints", [2])
+        addProperty(o, "org.eclipse.elk.nodeLabels.placement", [1, 4, 6])
 
         nRect = addRectangle(n)
         mRect = addRectangle(m)
@@ -39,10 +40,10 @@ class PlyghdKgraphSynthesis:
         mLabel = createLabel(m, "m")
         oLabel = createLabel(o, "o")
 
-        nmEdge = createEdge(n, m)
-        noEdge = createEdge(n, o)
+        nmEdge = createEdge(root, n, m)
+        noEdge = createEdge(root, n, o)
         
         addPolyline(nmEdge)
         addPolyline(noEdge)
 
-        return root
+        return graph

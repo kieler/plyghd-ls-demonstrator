@@ -10,10 +10,12 @@
                 {
                     "$ref": "#/definitions/KGraphData"
                 }
-            ]
+            ],
+            "default": []
         },
         "properties": {
-            "type": "object"
+            "type": "object",
+            "default": {}
         },
         "type": {
             "type": "string"
@@ -35,7 +37,8 @@
                         {
                             "$ref": "#/definitions/SModelElement"
                         }
-                    ]
+                    ],
+                    "default": []
                 },
                 "trace": {
                     "type": "string"
@@ -45,17 +48,32 @@
         "SShapeElement": {
             "allOf": [{"$ref": "#/definitions/SModelElement"}],
             "properties": {
-                "position": {
-                    "type": "object"
-                },
                 "size": {
-                    "type": "object"
-                },
-                "layoutOptions": {
-                    "type": "object"
+                    "type": "object",
+                    "properties": {
+                        "width": {
+                            "type": "number"
+                        },
+                        "height": {
+                            "type": "number"
+                        }
+                    },
+                    "default": { "width": 0.0, "height": 0.0 }
                 }
             }
             
+        },
+        "SKGraph": {
+            "allOf": [{"$ref": "#"}, {"$ref": "#/definitions/SModelElement"}],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "default": "graph"
+                },
+                "revision": {
+                    "type": "number"
+                }
+            }
         },
         "SKNode": {
             "allOf": [{"$ref": "#"}, {"$ref": "#/definitions/SShapeElement"}],
@@ -87,6 +105,23 @@
                 "targetId": {
                     "type": "string"
                 },
+                "junctionPoints": {
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "x": {
+                                    "type": "number"
+                                },
+                                "y": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    ],
+                    "default": []
+                },
                 "type": {
                     "type": "string",
                     "default": "edge"
@@ -105,24 +140,24 @@
         "KGraphData": {
             "properties": {
                 "properties": {
-                    "type": "object"
+                    "type": "object",
+                    "default": {}
                 }
             }
         },
         "KRendering": {
             "allOf": [{"$ref": "#/definitions/KGraphData"}],
             "properties": {
-                "parent": {
-                    "$ref": "#/definitions/KRendering"
-                },
                 "placementData": {
                     "$ref": "#/definitions/KPlacementData"
                 },
                 "styles": {
-                    "type": "array"
+                    "type": "array",
+                    "default": []
                 },
                 "actions": {
-                    "type": "array"
+                    "type": "array",
+                    "default": []
                 },
                 "type": {
                     "type": "string",
@@ -137,7 +172,8 @@
                     "type": "array",
                     "items": [
                         {"$ref": "#/definitions/KRendering"}
-                    ]
+                    ],
+                    "default": []
                 
                 },
                 "childPlacement": {
@@ -166,17 +202,42 @@
                 },
                 "cornerHeight": {
                     "type": "number"
+                },
+                "type": {
+                    "type": "string",
+                    "default": "KRoundedRectangleImpl"
                 }
             }
         },
         "KPolyline": {
-            "allOf": [{"$ref": "#/definitions/KContainerRendering"}]
+            "allOf": [{"$ref": "#/definitions/KContainerRendering"}],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "default": "KPolylineImpl"
+                },
+                "junctionPointRendering": {
+                    "$ref": "#/definitions/KRendering"
+                }
+            }
         },
         "KPolygon": {
-            "allOf": [{"$ref": "#/definitions/KPolyline"}]
+            "allOf": [{"$ref": "#/definitions/KPolyline"}],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "default": "KPolygonImpl"
+                }
+            }
         },
         "KSpline": {
-            "allOf": [{"$ref": "#/definitions/KPolyline"}]
+            "allOf": [{"$ref": "#/definitions/KPolyline"}],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "default": "KSplineImpl"
+                }
+            }
         },
         "KImage": {
             "allOf": [{"$ref": "#/definitions/KContainerRendering"}],
@@ -186,11 +247,21 @@
                 },
                 "imagePath": {
                     "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "default": "KImageImpl"
                 }
             }
         },
         "KEllipse": {
-            "allOf": [{"$ref": "#/definitions/KContainerRendering"}]
+            "allOf": [{"$ref": "#/definitions/KContainerRendering"}],
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "default": "KEllipseImpl"
+                }
+            }
         },
         "KArc": {
             "allOf": [{"$ref": "#/definitions/KContainerRendering"}],
@@ -200,6 +271,10 @@
                 },
                 "arcAngle": {
                     "type": "number"
+                },
+                "type": {
+                    "type": "string",
+                    "default": "KArcImpl"
                 }
             }
         },
@@ -211,12 +286,19 @@
                 },
                 "clip": {
                     "type": "boolean"
+                },
+                "type": {
+                    "type": "string",
+                    "default": "KTextImpl"
                 }
             }
         },
         "KPlacementData": {
+            "type": "object",
             "properties": {
-                
+                "stub": {
+                    "type": "string"
+                }
             }
         }
     }
