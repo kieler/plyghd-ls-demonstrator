@@ -17,6 +17,7 @@ python ls.py
 TODO: how to start klighd-cli
 
 ## Generating the KGraph data structure from schema
+Schema in [klighd-vscode](https://github.com/kieler/klighd-vscode/tree/main/schema/SKGraphSchema.json)
 ```
 datamodel-codegen --input SKGraphSchema.json --input-file-type jsonschema --output skgraph.py
 ```
