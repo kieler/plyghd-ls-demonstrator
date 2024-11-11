@@ -20,17 +20,28 @@ from pygls.server import LanguageServer
 
 import synthesis as plyghd_synthesis
 import PlyghdOptions
+from synthesis_options import SynthesisOption
 
 
 class KlighdLanguageServer(LanguageServer):
     CMD_SET_PREFERENCES = "keith/preferences/setPreferences"
     CMD_ACCEPT = "diagram/accept"
+    CMD_SET_SYNTHESIS_OPTIONS = "keith/diagramOptions/setSynthesisOptions"
 
     def __init__(self, *args):
         super().__init__(*args)
 
 
 klighd_server = KlighdLanguageServer("klighd-ls-example", "v0.1")
+
+current_options = {}
+
+
+def getOption(current_options: dict, option: SynthesisOption):
+    if (option.id in current_options):
+        return current_options[option.id]
+    else:
+        return option.initialValue
 
 
 @klighd_server.feature(lsp.INITIALIZE)
@@ -71,11 +82,23 @@ def accept(ls: KlighdLanguageServer, *args):
         print("action kind not supported yet: " + args[0].action.kind)
         return
     function(args[0].action)
+
+@klighd_server.feature(KlighdLanguageServer.CMD_SET_SYNTHESIS_OPTIONS)
+def set_synthesis_options(ls: KlighdLanguageServer, params: dict):
+    print(params)
+    # store the current synthesis options.
+    for option in params.synthesisOptions:
+        current_options[option.id] = option.currentValue
+
+    doRequestModel(params.uri)
     
 
-model_uri = ""
 def requestModel(action):
     print(action)
+    doRequestModel(action.options.sourceUri)
+
+model_uri = ""
+def doRequestModel(sourceUri):
     # we expect to receive an action such as this one:
     # {
     #     "kind": "requestModel",
@@ -89,7 +112,8 @@ def requestModel(action):
     # }
 
     # For now, we just remember the model to be generated.
-    model_uri = action.options.sourceUri
+    global model_uri
+    model_uri = sourceUri
 
     # Find out the model file extension to find the available syntheses.
     file_extension = model_uri.split(".")[-1]
@@ -114,10 +138,9 @@ def requestModel(action):
     send_available_options(synthesis_instance)
 
     # Finally, generate the kgraph from the model file (hardcoded for now) and send it the client.
-    model = synthesis_instance.transform(model_uri) # TODO: should load the model.
+    model = synthesis_instance.transform(model_uri, current_options) # TODO: should load the model.
     print("sending requestBounds")
     klighd_server.send_notification(KlighdLanguageServer.CMD_ACCEPT, {"clientId":"sprotty","action":{"kind":"requestBounds","newRoot": model}})
-    # klighd_server.send_notification(KlighdLanguageServer.CMD_ACCEPT, {"clientId":"sprotty","action":{"kind":"requestBounds","newRoot":{"properties":{},"revision":1,"type":"graph","id":"file:///home/nre/git/models/graphs/small.kgt","children":[{"data":[{"renderings":[{"junctionPointRendering":{"type":"KEllipseImpl","styles":[{"type":"KBackgroundImpl","color":{"red":0,"green":0,"blue":0},"alpha":255,"targetAlpha":255,"gradientAngle":0.0,"propagateToChildren":False,"selection":False}],"properties":{}},"type":"KPolylineImpl","children":[{"type":"KPolygonImpl","points":[{"x":{"type":"KLeftPositionImpl","absolute":0.0,"relative":0.0},"y":{"type":"KTopPositionImpl","absolute":0.0,"relative":0.0}},{"x":{"type":"KLeftPositionImpl","absolute":0.0,"relative":0.4},"y":{"type":"KTopPositionImpl","absolute":0.0,"relative":0.5}},{"x":{"type":"KLeftPositionImpl","absolute":0.0,"relative":0.0},"y":{"type":"KBottomPositionImpl","absolute":0.0,"relative":0.0}},{"x":{"type":"KRightPositionImpl","absolute":0.0,"relative":0.0},"y":{"type":"KBottomPositionImpl","absolute":0.0,"relative":0.5}}],"children":[],"styles":[{"lineWidth":1.0,"type":"KLineWidthImpl","propagateToChildren":False,"selection":False},{"type":"KForegroundImpl","color":{"red":0,"green":0,"blue":0},"alpha":255,"targetAlpha":255,"gradientAngle":0.0,"propagateToChildren":False,"selection":False},{"type":"KBackgroundImpl","color":{"red":0,"green":0,"blue":0},"alpha":255,"targetAlpha":255,"gradientAngle":0.0,"propagateToChildren":False,"selection":False},{"lineJoin":1,"miterLimit":10.0,"type":"KLineJoinImpl","propagateToChildren":False,"selection":False}],"properties":{}}],"styles":[{"lineCap":0,"type":"KLineCapImpl","propagateToChildren":False,"selection":False}],"id":"DefaultEdgeRendering","properties":{}},{"junctionPointRendering":{"type":"KEllipseImpl","styles":[{"type":"KBackgroundImpl","color":{"red":0,"green":0,"blue":0},"alpha":255,"targetAlpha":255,"gradientAngle":0.0,"propagateToChildren":False,"selection":False}],"properties":{}},"type":"KPolylineImpl","children":[],"id":"DefaultNoArrowPolylineEdgeRendering","properties":{}},{"type":"KSplineImpl","children":[{"type":"KPolygonImpl","points":[{"x":{"type":"KLeftPositionImpl","absolute":0.0,"relative":0.0},"y":{"type":"KTopPositionImpl","absolute":0.0,"relative":0.0}},{"x":{"type":"KLeftPositionImpl","absolute":0.0,"relative":0.4},"y":{"type":"KTopPositionImpl","absolute":0.0,"relative":0.5}},{"x":{"type":"KLeftPositionImpl","absolute":0.0,"relative":0.0},"y":{"type":"KBottomPositionImpl","absolute":0.0,"relative":0.0}},{"x":{"type":"KRightPositionImpl","absolute":0.0,"relative":0.0},"y":{"type":"KBottomPositionImpl","absolute":0.0,"relative":0.5}}],"children":[],"styles":[{"lineWidth":1.0,"type":"KLineWidthImpl","propagateToChildren":False,"selection":False},{"type":"KForegroundImpl","color":{"red":0,"green":0,"blue":0},"alpha":255,"targetAlpha":255,"gradientAngle":0.0,"propagateToChildren":False,"selection":False},{"type":"KBackgroundImpl","color":{"red":0,"green":0,"blue":0},"alpha":255,"targetAlpha":255,"gradientAngle":0.0,"propagateToChildren":False,"selection":False},{"lineJoin":1,"miterLimit":10.0,"type":"KLineJoinImpl","propagateToChildren":False,"selection":False}],"properties":{}}],"styles":[{"lineCap":0,"type":"KLineCapImpl","propagateToChildren":False,"selection":False}],"id":"SplineEdgeRendering","properties":{}},{"type":"KSplineImpl","children":[],"id":"NoArrowSplineEdgeRendering","properties":{}},{"cornerWidth":5.0,"cornerHeight":5.0,"type":"KRoundedRectangleImpl","children":[],"styles":[{"type":"KBackgroundImpl","color":{"red":235,"green":246,"blue":250},"alpha":255,"targetColor":{"red":196,"green":227,"blue":243},"targetAlpha":255,"gradientAngle":90.0,"propagateToChildren":False,"selection":False}],"id":"DefaultNodeRendering","properties":{}}],"type":"KRenderingLibraryImpl"}],"properties":{},"direction":0,"selected":False,"hoverFeedback":False,"size":{"width":0.0,"height":0.0},"type":"node","id":"$root","children":[{"data":[{"type":"KRectangleImpl","children":[],"properties":{}}],"properties":{"org.eclipse.elk.nodeSize.constraints":[2],"org.eclipse.elk.nodeLabels.placement":[1,4,6]},"direction":0,"selected":False,"hoverFeedback":False,"size":{"width":0.0,"height":0.0},"type":"node","id":"$root$Nn","children":[{"data":[{"cursorSelectable":False,"editable":False,"type":"KTextImpl","styles":[{"size":8,"scaleWithZoom":False,"type":"KFontSizeImpl","propagateToChildren":False,"selection":False}],"actions":[{"actionId":"de.cau.cs.kieler.klighd.actions.FocusAndContextAction","trigger":0,"altPressed":0,"ctrlCmdPressed":0,"shiftPressed":0}],"properties":{}}],"properties":{},"text":"nnnn","selected":False,"type":"label","id":"$root$Nn$$L0","children":[]}]},{"data":[{"type":"KRectangleImpl","children":[],"properties":{}}],"properties":{"org.eclipse.elk.nodeSize.constraints":[2],"org.eclipse.elk.nodeLabels.placement":[1,4,6]},"direction":0,"selected":False,"hoverFeedback":False,"size":{"width":0.0,"height":0.0},"type":"node","id":"$root$Nm","children":[{"data":[{"cursorSelectable":False,"editable":False,"type":"KTextImpl","styles":[{"size":8,"scaleWithZoom":False,"type":"KFontSizeImpl","propagateToChildren":False,"selection":False}],"actions":[{"actionId":"de.cau.cs.kieler.klighd.actions.FocusAndContextAction","trigger":0,"altPressed":0,"ctrlCmdPressed":0,"shiftPressed":0}],"properties":{}}],"properties":{},"text":"m","selected":False,"type":"label","id":"$root$Nm$$L0","children":[]}]},{"data":[{"type":"KRectangleImpl","children":[],"properties":{}}],"properties":{"org.eclipse.elk.nodeSize.constraints":[2],"org.eclipse.elk.nodeLabels.placement":[1,4,6]},"direction":0,"selected":False,"hoverFeedback":False,"size":{"width":0.0,"height":0.0},"type":"node","id":"$root$No","children":[{"data":[{"cursorSelectable":False,"editable":False,"type":"KTextImpl","styles":[{"size":8,"scaleWithZoom":False,"type":"KFontSizeImpl","propagateToChildren":False,"selection":False}],"actions":[{"actionId":"de.cau.cs.kieler.klighd.actions.FocusAndContextAction","trigger":0,"altPressed":0,"ctrlCmdPressed":0,"shiftPressed":0}],"properties":{}}],"properties":{},"text":"o","selected":False,"type":"label","id":"$root$No$$L0","children":[]}]},{"data":[{"type":"KPolylineImpl","children":[],"properties":{}}],"junctionPoints":[],"properties":{},"sourceId":"$root$Nn","targetId":"$root$Nm","selected":False,"hoverFeedback":False,"type":"edge","id":"$root$Nn$$E0","children":[]},{"data":[{"type":"KPolylineImpl","children":[],"properties":{}}],"junctionPoints":[],"properties":{},"sourceId":"$root$Nn","targetId":"$root$No","selected":False,"hoverFeedback":False,"type":"edge","id":"$root$Nn$$E1","children":[]}]}]}}})
 
 
 def send_syntheses(synthesis_ids):
@@ -175,6 +198,7 @@ def send_available_options(synthesis):
     #     "modelUri": "file:///home/nre/git/models/graphs/small.kgt"
     #   }
     # }
+    global model_uri
 
     synthesis_options_json = list(map(lambda option: {
         "synthesisOption": {
@@ -184,7 +208,7 @@ def send_available_options(synthesis):
             "sourceHash": option.id, # TODO: should be some unique hash value, might not be needed with better API.
             "initialValue": option.initialValue
         },
-        "currentValue": option.initialValue # TODO: should be stored and the current value be sent here instead.
+        "currentValue": getOption(current_options, option) # TODO: should be stored and the current value be sent here instead.
     }, synthesis.getDisplayedSynthesisOptions()))
 
 
