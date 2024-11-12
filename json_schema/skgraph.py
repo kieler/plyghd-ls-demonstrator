@@ -76,6 +76,8 @@ class KRendering(KGraphData):
     styles: Optional[List] = []
     actions: Optional[List] = []
     type: Optional[str] = 'KRenderingImpl'
+    # TODO: add this to the schema.
+    id: str
 
 
 class KContainerRendering(KRendering):

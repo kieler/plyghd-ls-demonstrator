@@ -1,6 +1,6 @@
 from graph_library import addProperty, createEdge, createLabel, createNode, createGraph
 from ls import getOption
-from rendering_library import addPolyline, addRectangle
+from rendering_library import addAction, addPolyline, addRectangle
 from synthesis_options import SynthesisOption, SynthesisOptionType
 
 
@@ -34,6 +34,15 @@ class PlyghdKgraphSynthesis:
         addProperty(o, "org.eclipse.elk.nodeLabels.placement", [1, 4, 6])
 
         nRect = addRectangle(n)
+
+        # TODO: actions not yet in schema
+        addAction(nRect, {
+            "actionId": f"{ID}.foo",
+            "trigger": 1, # 1 = doubleclick
+            "altPressed": False,
+            "ctrlCmdPressed": False,
+            "shiftPressed": False
+        })
         mRect = addRectangle(m)
         oRect = addRectangle(o)
 
