@@ -10,11 +10,17 @@ pip install -r requirements.txt
 ```
 Launch the python language server
 ```
-python ls.py
+python ls.py --port 5007
 ```
 
 ## Connecting with a client
-TODO: how to start klighd-cli
+The simplest way to use the demonstrator is to use the [klighd-cli](https://github.com/kieler/klighd-vscode/releases). Version 0.6.0 and onwards support client-only layout.
+
+To connect to the running server (use appropriate executable for your OS):
+```
+klighd-linux --ls_port 5007 ./empty.kgt
+```
+The klighd-cli expects always expects a file, but this example server doesn't actually need one so we just pass an empty `kgt` file.
 
 ## Generating the KGraph data structure from schema
 Schema in [klighd-vscode](https://github.com/kieler/klighd-vscode/tree/main/schema/SKGraphSchema.json)
