@@ -5,8 +5,7 @@ def addRectangle(element):
         element.data = []
     element.data.append(rectangle)
     # hardcode ID for now. TODO: needs to be hierarchical once we have real hiearchical renderings.
-    # TODO: id needs to be in schema as well.
-    rectangle.id = "R0"
+    setId(rectangle, "R0")
     return rectangle
 
 def addPolyline(element):
@@ -14,7 +13,7 @@ def addPolyline(element):
     if (element.data == None):
         element.data = []
     element.data.append(polyline)
-    polyline.id = "R0"
+    setId(polyline, "R0")
     return polyline
 
 def addText(element, theText):
@@ -23,10 +22,19 @@ def addText(element, theText):
     if (element.data == None):
         element.data = []
     element.data.append(text)
-    text.id = "R0"
+    setId(text, "R0")
     return text
 
 def addAction(element, action):
     if (element.actions == None):
         element.actions = []
     element.actions.append(action)
+
+
+def setId(element, id):
+    addProperty(element, "klighd.lsp.rendering.id", id)
+
+def addProperty(element, key, value):
+    if (element.properties == None):
+        element.properties = {}
+    element.properties[key] = value

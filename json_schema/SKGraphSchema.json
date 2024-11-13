@@ -162,9 +162,6 @@
                 "type": {
                     "type": "string",
                     "default": "KRenderingImpl"
-                },
-                "id": {
-                    "type": "string"
                 }
             }
         }, 

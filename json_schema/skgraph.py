@@ -76,7 +76,6 @@ class KRendering(KGraphData):
     styles: Optional[List] = []
     actions: Optional[List] = []
     type: Optional[str] = 'KRenderingImpl'
-    id: Optional[str] = None
 
 
 class KContainerRendering(KRendering):

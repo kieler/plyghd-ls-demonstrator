@@ -38,10 +38,10 @@ class PlyghdKgraphSynthesis:
         # TODO: actions not yet in schema
         addAction(nRect, {
             "actionId": f"{ID}.foo",
-            "trigger": 1, # 1 = doubleclick
-            "altPressed": False,
-            "ctrlCmdPressed": False,
-            "shiftPressed": False
+            "trigger": 1, # 0 = click, 1 = doubleclick, 2 = single or multiclick, 3-5 same for middle mouse button
+            "altPressed": 2, # 0 = don't care, 1 = pressed, 2 = not pressed
+            "ctrlCmdPressed": 2,
+            "shiftPressed": 2
         })
         mRect = addRectangle(m)
         oRect = addRectangle(o)
