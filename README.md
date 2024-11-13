@@ -22,6 +22,14 @@ klighd-linux --ls_port 5007 ./empty.kgt
 ```
 The klighd-cli expects always expects a file, but this example server doesn't actually need one so we just pass an empty `kgt` file.
 
+By default the klighd-cli assumes that the server can perform layout.
+We need to change this:
+1. Open the sidebar
+2. Enable Debug Options
+3. Scroll down to the bottom and Enable Client Layout
+
+This setting is now cached and when the server is restarted the setting will persist.
+
 ## Generating the KGraph data structure from schema
 Schema in [klighd-vscode](https://github.com/kieler/klighd-vscode/tree/main/schema/SKGraphSchema.json)
 ```
