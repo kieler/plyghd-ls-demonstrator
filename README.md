@@ -28,5 +28,6 @@ To change an option defined by the example synthesis, click on the "options" pan
 To perform an action, double click the rectangle behind the `nnnn` node (not the text itself). It will print to the language server console, that the action was performed on the `nnnn` node. This follows the message scheme defined in [TODO](https://todo) and implemented in [TODO](https://github.com/kieler/plyghd-ls-demonstrator/blob/main/ls.py)
 
 ## Generating the KGraph data structure from schema
-Schema in [klighd-vscode](https://github.com/kieler/klighd-vscode/tree/main/schema/SKGraphSchema.json)
-The generated types are committed in this repository. If the schemas are updated they can be rebuilt using the build script in the `klighd_types` folder. For this to work the initial setup under getting started has to have been done.
+The schema is defined in [klighd-vscode](https://github.com/kieler/klighd-vscode/tree/main/schema/SKGraphSchema.json).
+
+The generated types are committed in this repository. If the schemas are updated they can be rebuilt using the `rebuild_types.sh` build script in the `klighd_types` folder. For this to work the initial setup under getting started has to have been done.
