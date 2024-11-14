@@ -1,42 +1,35 @@
-from json_schema.skgraph import *
+from klighd_types.klighd.SKGraphSchema import *
 from rendering_library import addText
 
 def createGraph(uri):
-    graph = SKGraph()
-    graph.id = uri
-    graph.revision = 1
+    graph = SKGraph(id=uri,revision=1)
     return graph
 
 def createNode(parent):
-    node = SKNode()
     if (parent.children == None):
         parent.children = []
-    parent.children.append(node)
-    node.id = f"{parent.id}$$N{len(parent.children) - 1}"
+    nodeId = f"{parent.id}$$N{len(parent.children)}"
     if parent.type == "graph":
-        node.id = "$root"
+        nodeId = "$root"
+    node = SKNode(id=nodeId)
+    parent.children.append(node)
     return node
 
 def createLabel(parent, text):
-    label = SKLabel()
-    label.text = text
     if (parent.children == None):
         parent.children = []
+    labelId = f"{parent.id}$$L{len(parent.children)}"
+    label = SKLabel(id=labelId, text=text)
     parent.children.append(label)
-    label.id = f"{parent.id}$$L{len(parent.children) - 1}"
-
     addText(label, text)
     return label
 
 # Create an edge from source to target inside the parent.
 def createEdge(parent, source, target):
-    edge = SKEdge()
-    edge.sourceId = source.id
-    edge.targetId = target.id
     # TODO: the semantics of the ID might require it to be the index in relation to all edges, not also the nodes. Same in node position if the node contains edges.
-    edge.id = f"{source.id}$$E{len(parent.children) - 1}"
+    edgeId = f"{source.id}$$E{len(parent.children)}"
+    edge = SKEdge(id=edgeId, sourceId=source.id, targetId=target.id)
     parent.children.append(edge)
-
     return edge
 
 def addProperty(element, key, value):

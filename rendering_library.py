@@ -1,4 +1,4 @@
-from json_schema.skgraph import *
+from klighd_types.klighd.SKGraphSchema import *
 def addRectangle(element):
     rectangle = KRectangle()
     if (element.data == None):
