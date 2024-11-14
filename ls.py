@@ -74,7 +74,10 @@ def set_preferences(ls: KlighdLanguageServer, preferences: dict):
 @klighd_server.feature(KlighdLanguageServer.CMD_ACCEPT)
 def accept(ls: KlighdLanguageServer, *args):
     print(args[0])
-    options = {"requestModel": requestModel}
+    options = {
+        "requestModel": requestModel,
+        "performAction": performAction
+    }
 
     try:
         function = options[args[0].action.kind]
@@ -215,6 +218,9 @@ def send_available_options(synthesis):
 
     print("sending updateOptions")
     klighd_server.send_notification(KlighdLanguageServer.CMD_ACCEPT, {"clientId":"sprotty","action":{"kind":"updateOptions","valuedSynthesisOptions": synthesis_options_json, "layoutOptions":[],"actions":[],"modelUri": model_uri}})
+
+def performAction(action):
+    print("action performed! action ID: " + action.actionId + ", KGraph element ID: " + action.kGraphElementId + ", KRendering ID: " + action.kRenderingId)
 
 
 def add_arguments(parser):

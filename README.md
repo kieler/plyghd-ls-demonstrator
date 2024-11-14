@@ -10,7 +10,7 @@ pip install -r requirements.txt
 ```
 Launch the python language server
 ```
-python ls.py
+python ls.py --port 5007
 ```
 
 ## Connecting with a client
@@ -29,6 +29,4 @@ To perform an action, double click the rectangle behind the `nnnn` node (not the
 
 ## Generating the KGraph data structure from schema
 Schema in [klighd-vscode](https://github.com/kieler/klighd-vscode/tree/main/schema/SKGraphSchema.json)
-```
-datamodel-codegen --input SKGraphSchema.json --input-file-type jsonschema --output skgraph.py
-```
+The generated types are committed in this repository. If the schemas are updated they can be rebuilt using the build script in the `klighd_types` folder. For this to work the initial setup under getting started has to have been done.
