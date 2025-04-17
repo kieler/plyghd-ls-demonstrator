@@ -19,14 +19,20 @@ from lsprotocol import types as lsp
 from pygls.server import LanguageServer
 
 import synthesis as plyghd_synthesis
-import PlyghdOptions
-from synthesis_options import SynthesisOption
+from kieler_klighd_types.klighd.actions.setSyntheses import SetSyntheses, Synthesis
+from kieler_klighd_types.klighd.actions.updateOptions import UpdateOptions
+from kieler_klighd_types.klighd.messages.preferencesSetPreferences import Method as setPreferencesMethod
+from kieler_klighd_types.klighd.messages.diagramOptionsSetSynthesisOptions import Method as setSynthesisOptionsMethod
+from kieler_klighd_types.klighd.SynthesisOptionSchema import SynthesisOption, ValuedSynthesisOption
 
+from kieler_klighd_types.sprotty.actions.action import Action
+from kieler_klighd_types.sprotty.actions.requestBounds import RequestBounds
+from kieler_klighd_types.sprotty.diagramAccept import DiagramAccept
+from kieler_klighd_types.sprotty.diagramAccept import Method as DiagramAcceptMethod
+
+import PlyghdOptions
 
 class KlighdLanguageServer(LanguageServer):
-    CMD_SET_PREFERENCES = "keith/preferences/setPreferences"
-    CMD_ACCEPT = "diagram/accept"
-    CMD_SET_SYNTHESIS_OPTIONS = "keith/diagramOptions/setSynthesisOptions"
 
     def __init__(self, *args):
         super().__init__(*args)
@@ -54,7 +60,7 @@ def initialize(params: lsp.InitializeParams):
             continue
 
 
-@klighd_server.feature(KlighdLanguageServer.CMD_SET_PREFERENCES)
+@klighd_server.feature(setPreferencesMethod.keith_preferences_setPreferences.value)
 def set_preferences(ls: KlighdLanguageServer, preferences: dict):
     # we don't care about the preferences set currently.
     # We expect a message such as this one:
@@ -71,7 +77,7 @@ def set_preferences(ls: KlighdLanguageServer, preferences: dict):
     pass
 
 
-@klighd_server.feature(KlighdLanguageServer.CMD_ACCEPT)
+@klighd_server.feature(DiagramAcceptMethod.diagram_accept.value)
 def accept(ls: KlighdLanguageServer, *args):
     print(args[0])
     options = {
@@ -86,7 +92,7 @@ def accept(ls: KlighdLanguageServer, *args):
         return
     function(args[0].action)
 
-@klighd_server.feature(KlighdLanguageServer.CMD_SET_SYNTHESIS_OPTIONS)
+@klighd_server.feature(setSynthesisOptionsMethod.keith_diagramOptions_setSynthesisOptions.value)
 def set_synthesis_options(ls: KlighdLanguageServer, params: dict):
     print(params)
     # store the current synthesis options.
@@ -143,7 +149,7 @@ def doRequestModel(sourceUri):
     # Finally, generate the kgraph from the model file (hardcoded for now) and send it the client.
     model = synthesis_instance.transform(model_uri, current_options) # TODO: should load the model.
     print("sending requestBounds")
-    klighd_server.send_notification(KlighdLanguageServer.CMD_ACCEPT, {"clientId":"sprotty","action":{"kind":"requestBounds","newRoot": model}})
+    send_diagram_accept_message(RequestBounds(newRoot=model))
 
 
 def send_syntheses(synthesis_ids):
@@ -164,9 +170,11 @@ def send_syntheses(synthesis_ids):
     #     }
     #   }
     # }
-    syntheses = list(map(lambda id: {"id": id, "displayName": id.split(".")[-1]}, synthesis_ids))
+    syntheses = list(map(lambda id: 
+                         Synthesis(id=id, displayName=id.split(".")[-1]),
+                         synthesis_ids))
     print("sending setSynthesis")
-    klighd_server.send_notification(KlighdLanguageServer.CMD_ACCEPT, {"clientId":"sprotty","action":{"kind":"setSyntheses","syntheses": syntheses}})
+    send_diagram_accept_message(SetSyntheses(syntheses=syntheses))
 
 def send_available_options(synthesis):
     # Send a message like this one, containing the options of the chosen synthesis:
@@ -203,21 +211,13 @@ def send_available_options(synthesis):
     # }
     global model_uri
 
-    synthesis_options_json = list(map(lambda option: {
-        "synthesisOption": {
-            "id": option.id,
-            "name": option.name,
-            "type": option.type,
-            "sourceHash": option.id, # TODO: should be some unique hash value, might not be needed with better API.
-            "initialValue": option.initialValue
-        },
-        "currentValue": getOption(current_options, option) # TODO: should be stored and the current value be sent here instead.
-    }, synthesis.getDisplayedSynthesisOptions()))
-
-
+    valued_synthesis_options = list(map(lambda option: 
+        ValuedSynthesisOption(synthesisOption=option, currentValue=getOption(current_options, option)),
+        synthesis.getDisplayedSynthesisOptions()))
 
     print("sending updateOptions")
-    klighd_server.send_notification(KlighdLanguageServer.CMD_ACCEPT, {"clientId":"sprotty","action":{"kind":"updateOptions","valuedSynthesisOptions": synthesis_options_json, "layoutOptions":[],"actions":[],"modelUri": model_uri}})
+    send_diagram_accept_message(UpdateOptions(valuedSynthesisOptions=valued_synthesis_options, modelUri=model_uri))
+
 
 def performAction(action):
     print("action performed! action ID: " + action.actionId + ", KGraph element ID: " + action.kGraphElementId + ", KRendering ID: " + action.kRenderingId)
@@ -229,6 +229,9 @@ def add_arguments(parser):
     parser.add_argument("--host", default="127.0.0.1", help="Bind to this address")
     parser.add_argument("--port", type=int, default=5007, help="Bind to this port")
 
+def send_diagram_accept_message(action: Action):
+    diagramAccept = DiagramAccept(params={"clientId": "sprotty", "action": action})
+    klighd_server.send_notification(diagramAccept.method, diagramAccept.params)
 
 def main():
     parser = argparse.ArgumentParser()

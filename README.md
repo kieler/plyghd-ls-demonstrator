@@ -28,7 +28,9 @@ To change an option defined by the example synthesis, click on the "options" pan
 
 To perform an action, double click the rectangle behind the `nnnn` node (not the text itself). It will print to the language server console, that the action was performed on the `nnnn` node. This follows the message scheme defined in [TODO](https://todo) and implemented in [TODO](https://github.com/kieler/plyghd-ls-demonstrator/blob/main/ls.py)
 
-## Generating the KGraph data structure from schema
+## KGraph data structure in python
+The [kieler-klighd-types package](https://pypi.org/project/kieler-klighd-types/) provides Python implementations for the lsp messages required to talk to a klighd language client.
+To implement your own python language server you can use that package.
+To see how the types are generated and how this might be done for other languages see [git repo](https://github.com/kieler/klighd-python-types).
 The schema is defined in [klighd-vscode](https://github.com/kieler/klighd-vscode/tree/main/schema/SKGraphSchema.json).
 
-The generated types are committed in this repository. If the schemas are updated they can be rebuilt using the `rebuild_types.sh` build script in the `klighd_types` folder. For this to work the initial setup under getting started has to have been done.
