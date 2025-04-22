@@ -1,14 +1,14 @@
 from graph_library import addProperty, createEdge, createLabel, createNode, createGraph
 from ls import getOption
 from rendering_library import addAction, addPolyline, addRectangle
-from synthesis_options import SynthesisOption, SynthesisOptionType
+from kieler_klighd_types.klighd.SynthesisOptionSchema import CheckSynthesisOption
 
 
 
 
 ID = "de.cau.cs.kieler.plyghd.PlyghdKgraphSynthesis"
 
-LABELS = SynthesisOption("de.cau.cs.kieler.plyghd.PlyghdKgraphSynthesis.labels", "Labels", SynthesisOptionType.CHECK, True)
+LABELS = CheckSynthesisOption(id="de.cau.cs.kieler.plyghd.PlyghdKgraphSynthesis.labels", sourceHash="de.cau.cs.kieler.plyghd.PlyghdKgraphSynthesis.labels", name="Labels", initialValue=True)
 
 
 class PlyghdKgraphSynthesis:

@@ -1,4 +1,4 @@
-from klighd_types.klighd.SKGraphSchema import *
+from kieler_klighd_types.klighd.SKGraphSchema import *
 def addRectangle(element):
     rectangle = KRectangle()
     if (element.data == None):
