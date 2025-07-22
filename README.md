@@ -32,5 +32,5 @@ To perform an action, double click the rectangle behind the `nnnn` node (not the
 The [kieler-klighd-types package](https://pypi.org/project/kieler-klighd-types/) provides Python implementations for the lsp messages required to talk to a klighd language client.
 To implement your own python language server you can use that package.
 To see how the types are generated and how this might be done for other languages see [git repo](https://github.com/kieler/klighd-python-types).
-The schema is defined in [klighd-vscode](https://github.com/kieler/klighd-vscode/tree/main/schema/SKGraphSchema.json).
+The schema is defined in [klighd-vscode](https://github.com/kieler/klighd-vscode/blob/main/schema/klighd/SKGraphSchema.json).
 
