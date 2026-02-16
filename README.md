@@ -1,6 +1,6 @@
 # plyghd Language Server
 This project serves as a demonstrator to show how to implement a basic language server that can interface with the [klighd-vscode](https://github.com/kieler/klighd-vscode).
-It demonstrates the implementaion of the *DSP* (c.f. [Klighd architectural overview](https://github.com/kieler/klighd-vscode/wiki/Diagram-Server-Communication-%E2%80%90-Architectural-Overview)) in a language that cannot use the Java implementation of the Klighd server.
+It demonstrates the implementation of the *DSP* (c.f. [Klighd architectural overview](https://github.com/kieler/klighd-vscode/wiki/Diagram-Server-Communication-%E2%80%90-Architectural-Overview)) in a language that cannot use the Java implementation of the Klighd server.
 
 ## Getting Started
 Setup a virtual environment and install the required packages.
