@@ -1,8 +1,8 @@
 from graph_library import addProperty, createEdge, createLabel, createNode, createGraph, createPort
 from ls import getOption
-from rendering_library import addAction, addChildText, addPolyline, addRectangle, addText
+from rendering_library import addAction, addChildText, addPolyline, addRectangle, addText, getId, setId
 from kieler_klighd_types.klighd.SynthesisOptionSchema import CheckSynthesisOption
-
+from kieler_klighd_types.klighd.SKGraphSchema import KRectangle
 
 
 
@@ -88,6 +88,18 @@ class PlyghdKgraphSynthesis:
         edge15 = createEdge(hierarchicalNode, childNode1, childNode5)
         edge35 = createEdge(hierarchicalNode, childNode3, childNode5)
         edge45 = createEdge(hierarchicalNode, childNode4, childNode5)
+
+        # a node with a custom proxy rendering.
+        nodeWithProxyRendering = createNode(root)
+        nodeWithProxyRenderingRect = addRectangle(nodeWithProxyRendering)
+        addChildText(nodeWithProxyRenderingRect, "Node with proxy rendering")
+        addProperty(nodeWithProxyRendering, "de.cau.cs.kieler.klighd.proxyView.renderNodeAsProxy", True)
+        proxyRenderingRect = KRectangle()
+        setId(proxyRenderingRect, nodeWithProxyRendering.id + "-proxy")
+        # TODO: styles not yet in schema
+        proxyRenderingRect.styles = [{"type": "KInvisibilityImpl", "invisible": True, "propagateToChildren": False, "selection": False}]
+        addChildText(proxyRenderingRect, "Proxy Rendering")
+        addProperty(nodeWithProxyRendering, "de.cau.cs.kieler.klighd.proxyView.proxyRendering", [proxyRenderingRect])
 
         return graph
 
