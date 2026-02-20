@@ -25,6 +25,15 @@ def addText(element, theText):
     setId(text, "R0")
     return text
 
+def addChildText(element, theText):
+    text = KText()
+    text.text = theText
+    if (element.children == None):
+        element.children = []
+    element.children.append(text)
+    setId(text, "R0")
+    return text
+
 def addAction(element, action):
     if (element.actions == None):
         element.actions = []

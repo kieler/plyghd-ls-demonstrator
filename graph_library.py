@@ -32,6 +32,15 @@ def createEdge(parent, source, target):
     parent.children.append(edge)
     return edge
 
+def createPort(parent):
+    if (parent.children == None):
+        parent.children = []
+    portId = f"{parent.id}$$P{len(parent.children)}"
+    port = SKPort(id=portId)
+    parent.children.append(port)
+    port.size = Size.parse_obj({'width': 5.0, 'height': 5.0})
+    return port
+
 def addProperty(element, key, value):
     if (element.properties == None):
         element.properties = {}
