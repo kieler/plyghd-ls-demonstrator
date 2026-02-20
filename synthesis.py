@@ -78,7 +78,7 @@ class PlyghdKgraphSynthesis:
         addProperty(scalingText, "klighd.isNodeTitle", True)
         # TODO: specific placement data classes not yet in schema
         scalingText.placementData = {
-            "type": "KPointPlacementDataImpl", # TODO: should not end with "Impl", what did Henri test here?
+            "type": "KPointPlacementDataImpl",
             "referencePoint": {
                 "x": {
                     "type": "KLeftPositionImpl",
