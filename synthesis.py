@@ -76,6 +76,30 @@ class PlyghdKgraphSynthesis:
         hierarchicalNodeRect = addRectangle(hierarchicalNode)
         scalingText = addChildText(hierarchicalNodeRect, "Scaling Text")
         addProperty(scalingText, "klighd.isNodeTitle", True)
+        # TODO: specific placement data classes not yet in schema
+        scalingText.placementData = {
+            "type": "KPointPlacementDataImpl", # TODO: should not end with "Impl", what did Henri test here?
+            "referencePoint": {
+                "x": {
+                    "type": "KLeftPositionImpl",
+                    "absolute": 0.0,
+                    "relative": 0.5,
+                },
+                "y": {
+                    "type": "KTopPositionImpl",
+                    "absolute": 0.0,
+                    "relative": 0.0,
+                }
+            },
+            "horizontalAlignment": 1,
+            "verticalAlignment": 0,
+            "horizontalMargin": 0,
+            "verticalMargin": 0,
+            "minWidth": 0,
+            "minHeight": 0,
+        }
+        #  it.setPointPlacementData(createKPosition(LEFT, 0, 0.5f, TOP, 0, 0), H_CENTRAL, V_TOP, 0, 0, 0, 0);
+        # KPosition referencePoint, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, float horizontalMargin, float verticalMargin, float minWidth, float minHeight)
 
         childNode1 = createNodeWithLabel(hierarchicalNode, "1")
         childNode2 = createNodeWithLabel(hierarchicalNode, "2")
