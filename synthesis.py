@@ -125,6 +125,12 @@ class PlyghdKgraphSynthesis:
         addChildText(proxyRenderingRect, "Proxy Rendering")
         addProperty(nodeWithProxyRendering, "de.cau.cs.kieler.klighd.proxyView.proxyRendering", [proxyRenderingRect])
 
+        # a node with a custom tag for semantic filtering.
+        taggedNode = createNodeWithLabel(root, "Tagged Node with the Tag \"customTag\"")
+        addProperty(taggedNode, "de.cau.cs.kieler.klighd.semanticFilter.tags", [{
+            "tag": "customTag",
+        }])
+
         return graph
 
 
