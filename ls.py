@@ -13,6 +13,7 @@
 #  #  SPDX-License-Identifier: MIT
 
 import argparse
+import traceback
 
 from lsprotocol import types as lsp
 
@@ -147,7 +148,13 @@ def doRequestModel(sourceUri):
     send_available_options(synthesis_instance)
 
     # Finally, generate the kgraph from the model file (hardcoded for now) and send it the client.
-    model = synthesis_instance.transform(model_uri, current_options) # TODO: should load the model.
+    try:
+        model = synthesis_instance.transform(model_uri, current_options) # TODO: should load the model.
+    except Exception as e:
+        print("error during synthesis.")
+        print(traceback.format_exc())
+        raise e
+        
     print("sending requestBounds")
     send_diagram_accept_message(RequestBounds(newRoot=model))
 
