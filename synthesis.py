@@ -2,7 +2,7 @@ from graph_library import addProperty, createEdge, createLabel, createNode, crea
 from ls import getOption
 from rendering_library import addAction, addChildText, addPolyline, addRectangle, addText, getId, setId
 from kieler_klighd_types.klighd.SynthesisOptionSchema import CheckSynthesisOption
-from kieler_klighd_types.klighd.SKGraphSchema import KRectangle
+from kieler_klighd_types.klighd.SKGraphSchema import KInvisibility, KLeftPosition, KPosition, KRectangle, KPointPlacementData, KTopPosition
 
 
 
@@ -76,30 +76,14 @@ class PlyghdKgraphSynthesis:
         hierarchicalNodeRect = addRectangle(hierarchicalNode)
         scalingText = addChildText(hierarchicalNodeRect, "Scaling Text")
         addProperty(scalingText, "klighd.isNodeTitle", True)
-        # TODO: specific placement data classes not yet in schema
-        scalingText.placementData = {
-            "type": "KPointPlacementDataImpl",
-            "referencePoint": {
-                "x": {
-                    "type": "KLeftPositionImpl",
-                    "absolute": 0.0,
-                    "relative": 0.5,
-                },
-                "y": {
-                    "type": "KTopPositionImpl",
-                    "absolute": 0.0,
-                    "relative": 0.0,
-                }
-            },
-            "horizontalAlignment": 1,
-            "verticalAlignment": 0,
-            "horizontalMargin": 0,
-            "verticalMargin": 0,
-            "minWidth": 0,
-            "minHeight": 0,
-        }
-        #  it.setPointPlacementData(createKPosition(LEFT, 0, 0.5f, TOP, 0, 0), H_CENTRAL, V_TOP, 0, 0, 0, 0);
-        # KPosition referencePoint, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, float horizontalMargin, float verticalMargin, float minWidth, float minHeight)
+        scalingText.placementData = KPointPlacementData(
+            referencePoint=KPosition(x=KLeftPosition(relative=0.5), y=KTopPosition()), 
+            horizontalAlignment=1, 
+            verticalAlignment=0, 
+            horizontalMargin=0, 
+            verticalMargin=0, 
+            minWidth=0, 
+            minHeight=0)
 
         childNode1 = createNodeWithLabel(hierarchicalNode, "1")
         childNode2 = createNodeWithLabel(hierarchicalNode, "2")
@@ -120,8 +104,7 @@ class PlyghdKgraphSynthesis:
         addProperty(nodeWithProxyRendering, "de.cau.cs.kieler.klighd.proxyView.renderNodeAsProxy", True)
         proxyRenderingRect = KRectangle()
         setId(proxyRenderingRect, nodeWithProxyRendering.id + "-proxy")
-        # TODO: styles not yet in schema
-        proxyRenderingRect.styles = [{"type": "KInvisibilityImpl", "invisible": True, "propagateToChildren": False, "selection": False}]
+        proxyRenderingRect.styles = [KInvisibility()]
         addChildText(proxyRenderingRect, "Proxy Rendering")
         addProperty(nodeWithProxyRendering, "de.cau.cs.kieler.klighd.proxyView.proxyRendering", [proxyRenderingRect])
 
