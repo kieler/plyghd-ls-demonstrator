@@ -2,8 +2,8 @@ from graph_library import addProperty, createEdge, createLabel, createNode, crea
 from ls import getOption
 from rendering_library import addAction, addChildText, addPolyline, addRectangle, addText, getId, setId
 from kieler_klighd_types.klighd.SynthesisOptionSchema import CheckSynthesisOption
-from kieler_klighd_types.klighd.SKGraphSchema import KInvisibility, KLeftPosition, KPosition, KRectangle, KPointPlacementData, KTopPosition
-from kieler_klighd_types.klighd.KlighdProperties import SemanticFilterTag, SemanticFilterTags, ProxyViewProxyRendering, ProxyViewRenderNodeAsProxy
+from kieler_klighd_types.klighd.SKGraphSchema import KAction, KInvisibility, KLeftPosition, KPosition, KRectangle, KPointPlacementData, KTopPosition, ModifierState, Trigger
+from kieler_klighd_types.klighd.KlighdProperties import IsNodeTitle, SemanticFilterTag, SemanticFilterTags, ProxyViewProxyRendering, ProxyViewRenderNodeAsProxy
 
 
 
@@ -36,14 +36,13 @@ class PlyghdKgraphSynthesis:
 
         nRect = addRectangle(n)
 
-        # TODO: actions not yet in schema
-        addAction(nRect, {
-            "actionId": f"{ID}.foo",
-            "trigger": 1, # 0 = click, 1 = doubleclick, 2 = single or multiclick, 3-5 same for middle mouse button
-            "altPressed": 2, # 0 = don't care, 1 = pressed, 2 = not pressed
-            "ctrlCmdPressed": 2,
-            "shiftPressed": 2
-        })
+        addAction(nRect, KAction(
+            actionId=f"{ID}.foo",
+            trigger=Trigger().singleClick,
+            altPressed=ModifierState().notPressed,
+            ctrlCmdPressed=ModifierState().notPressed,
+            shiftPressed=ModifierState().notPressed
+        ))
         mRect = addRectangle(m)
         oRect = addRectangle(o)
         
@@ -76,7 +75,7 @@ class PlyghdKgraphSynthesis:
         hierarchicalNode = createNode(root)
         hierarchicalNodeRect = addRectangle(hierarchicalNode)
         scalingText = addChildText(hierarchicalNodeRect, "Scaling Text")
-        addProperty(scalingText, "klighd.isNodeTitle", True)
+        addProperty(scalingText, IsNodeTitle().id, True)
         scalingText.placementData = KPointPlacementData(
             referencePoint=KPosition(x=KLeftPosition(relative=0.5), y=KTopPosition()), 
             horizontalAlignment=1, 

@@ -20,6 +20,7 @@ from lsprotocol import types as lsp
 from pygls.server import LanguageServer
 
 import synthesis as plyghd_synthesis
+from kieler_klighd_types.klighd.actions.performAction import Kind as PerformActionKind
 from kieler_klighd_types.klighd.actions.setSyntheses import SetSyntheses, Synthesis
 from kieler_klighd_types.klighd.actions.updateOptions import UpdateOptions
 from kieler_klighd_types.klighd.messages.preferencesSetPreferences import Method as setPreferencesMethod
@@ -28,8 +29,10 @@ from kieler_klighd_types.klighd.SynthesisOptionSchema import SynthesisOption, Va
 
 from kieler_klighd_types.sprotty.actions.action import Action
 from kieler_klighd_types.sprotty.actions.requestBounds import RequestBounds
+from kieler_klighd_types.sprotty.actions.requestModel import Kind as RequestModelKind
 from kieler_klighd_types.sprotty.diagramAccept import DiagramAccept
 from kieler_klighd_types.sprotty.diagramAccept import Method as DiagramAcceptMethod
+from kieler_klighd_types.sprotty.diagramAccept import Params as DiagramAcceptParams
 
 import PlyghdOptions
 
@@ -82,8 +85,8 @@ def set_preferences(ls: KlighdLanguageServer, preferences: dict):
 def accept(ls: KlighdLanguageServer, *args):
     print(args[0])
     options = {
-        "requestModel": requestModel,
-        "performAction": performAction
+        RequestModelKind.requestModel.value: requestModel,
+        PerformActionKind.performAction.value: performAction
     }
 
     try:
@@ -237,7 +240,7 @@ def add_arguments(parser):
     parser.add_argument("--port", type=int, default=5007, help="Bind to this port")
 
 def send_diagram_accept_message(action: Action):
-    diagramAccept = DiagramAccept(params={"clientId": "sprotty", "action": action})
+    diagramAccept = DiagramAccept(params=DiagramAcceptParams(action=action))
     klighd_server.send_notification(diagramAccept.method, diagramAccept.params)
 
 def main():

@@ -1,4 +1,6 @@
+from kieler_klighd_types.klighd.KlighdProperties import RenderingId
 from kieler_klighd_types.klighd.SKGraphSchema import *
+
 def addRectangle(element):
     rectangle = KRectangle()
     if (element.data == None):
@@ -41,13 +43,13 @@ def addAction(element, action):
 
 
 def setId(element, id):
-    addProperty(element, "klighd.lsp.rendering.id", id)
+    addProperty(element, RenderingId().id, id)
 
 def getId(element):
     if (element.properties == None):
         return None
     print(element.properties)
-    return element.properties["klighd.lsp.rendering.id"]
+    return element.properties[RenderingId().id]
 
 def addProperty(element, key, value):
     if (element.properties == None):
