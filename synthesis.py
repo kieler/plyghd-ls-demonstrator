@@ -3,6 +3,7 @@ from ls import getOption
 from rendering_library import addAction, addChildText, addPolyline, addRectangle, addText, getId, setId
 from kieler_klighd_types.klighd.SynthesisOptionSchema import CheckSynthesisOption
 from kieler_klighd_types.klighd.SKGraphSchema import KInvisibility, KLeftPosition, KPosition, KRectangle, KPointPlacementData, KTopPosition
+from kieler_klighd_types.klighd.KlighdProperties import SemanticFilterTag, SemanticFilterTags, ProxyViewProxyRendering, ProxyViewRenderNodeAsProxy
 
 
 
@@ -101,18 +102,19 @@ class PlyghdKgraphSynthesis:
         nodeWithProxyRendering = createNode(root)
         nodeWithProxyRenderingRect = addRectangle(nodeWithProxyRendering)
         addChildText(nodeWithProxyRenderingRect, "Node with proxy rendering")
-        addProperty(nodeWithProxyRendering, "de.cau.cs.kieler.klighd.proxyView.renderNodeAsProxy", True)
+        addProperty(nodeWithProxyRendering, ProxyViewRenderNodeAsProxy().id, True)
         proxyRenderingRect = KRectangle()
         setId(proxyRenderingRect, nodeWithProxyRendering.id + "-proxy")
         proxyRenderingRect.styles = [KInvisibility()]
         addChildText(proxyRenderingRect, "Proxy Rendering")
-        addProperty(nodeWithProxyRendering, "de.cau.cs.kieler.klighd.proxyView.proxyRendering", [proxyRenderingRect])
+        proxyViewRenderingProperty = ProxyViewProxyRendering()
+        addProperty(nodeWithProxyRendering, proxyViewRenderingProperty.id, [proxyRenderingRect])
 
         # a node with a custom tag for semantic filtering.
         taggedNode = createNodeWithLabel(root, "Tagged Node with the Tag \"customTag\"")
-        addProperty(taggedNode, "de.cau.cs.kieler.klighd.semanticFilter.tags", [{
-            "tag": "customTag",
-        }])
+        addProperty(taggedNode, SemanticFilterTags().id, [
+            SemanticFilterTag(tag="customTag"),
+        ])
 
         return graph
 
