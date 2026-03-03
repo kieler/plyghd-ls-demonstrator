@@ -106,8 +106,7 @@ class PlyghdKgraphSynthesis:
         setId(proxyRenderingRect, nodeWithProxyRendering.id + "-proxy")
         proxyRenderingRect.styles = [KInvisibility()]
         addChildText(proxyRenderingRect, "Proxy Rendering")
-        proxyViewRenderingProperty = ProxyViewProxyRendering()
-        addProperty(nodeWithProxyRendering, proxyViewRenderingProperty.id, [proxyRenderingRect])
+        addProperty(nodeWithProxyRendering, ProxyViewProxyRendering().id, [proxyRenderingRect])
 
         # a node with a custom tag for semantic filtering.
         taggedNode = createNodeWithLabel(root, "Tagged Node with the Tag \"customTag\"")
