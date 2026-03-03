@@ -14,21 +14,27 @@ Launch the python language server
 python ls.py --port 5007
 ```
 
-## Connecting with a client
+## Connecting with a Client
 Download the latest version of the [KLighD CLI](https://github.com/kieler/klighd-vscode/releases).
 When executing it, the help text provides some usage hints: e.g. `./klighd-linux --help` on Linux systems.
 
-The KLighD CLI usually requests a language server to open the diagram for a specific file. Here we did not implement any model code or loading the file, but we still need a dummy file for this implementation to recognize that it can support a diagram for it. We use the `.kgt` extension. So create a dummy file next to the CLI with the correct extension: `touch dummy.kgt`
+The KLighD CLI usually requests a language server to open the diagram for a specific file. Here we did not implement any model code or loading the file, but we still need a dummy file for this implementation to recognize that it can support a diagram for it. We use the `.kgt` extension and provide such a dummy file in `empty.kgt`.
 
-Next, launch the CLI and connect it to your language server. Our server uses the default port 5007, so the CLI call looks like this: `./klighd-linux --ls_port 5007 ./dummy.kgt`.
+Next, launch the CLI and connect it to your language server. Our server uses the default port 5007, so the CLI call looks like this: `./klighd-linux --ls_port 5007 ./empty.kgt`.
 
-This should open a diagram view in your browser. It will probably not show any diagram yet, because we have to first tell it to use client-layout, which is off by default. To change that option, click on the cogwheel in the browser window (the general options panel of the KLighD CLI), enable the `Render Options>Debug Options` option, scroll to the bottom and enable the `Preferences>Client Layout` option. After this, you will need to restart this plyghd language server and reload the KLighD CLI browser window. A simple diagram with the nodes `nnnn`, `m`, and `o` should be visible in the window now.
+This should open a diagram view in your browser. It may not show any diagram yet, because we have to first tell it to use client-layout, which is off by default. To change that option, click on the cogwheel in the browser window (the general options panel of the KLighD CLI), enable the `Render Options>Debug Options` option, scroll to the bottom and enable the `Preferences>Client Layout` option. After this, you will need to restart this plyghd language server and reload the KLighD CLI browser window. A simple diagram with the nodes `nnnn`, `m`, and `o` should be visible in the window now.
 
 To change an option defined by the example synthesis, click on the "options" panel on the right (the sliders icon) and enable/disable the "Lables" option. This is defined and used in the [synthesis.py](https://github.com/kieler/plyghd-ls-demonstrator/blob/main/synthesis.py) file. This follows the message scheme defined in [here]([https://todo](https://github.com/kieler/klighd-vscode/tree/main/schema)) and implemented in [here](https://github.com/kieler/plyghd-ls-demonstrator/blob/main/ls.py)
 
 To perform an action, double click the rectangle behind the `nnnn` node (not the text itself). It will print to the language server console, that the action was performed on the `nnnn` node.
 
-## KGraph data structure in python
+The node with the label "Node with proxy rendering" has a custom proxy rendering. If you pan the viewport so that this node is off-screen, it will show a proxy with the custom label "Proxy Rendering" instead. (Requires "Proxy View" option to be turned on.)
+
+The node with the label 'Tagged Node with the Tag "customTag"' has a special tag that can be used on the client. For example, opening the search window (Ctrl+F), toggling the tag search, and typing "#customTag" into the tag filter, the client will find and highlight that node.
+
+The larger node with the label "Scaling Text" is configured with a scaling title rendering. When you zoom out, this text will scale up to remain readable until it is bounded by the node's width. (Requires "Smart Zoom" option to be turned on.)
+
+## KGraph Data Structure in Python
 The [kieler-klighd-types package](https://pypi.org/project/kieler-klighd-types/) provides Python implementations for the lsp messages required to talk to a klighd language client.
 To implement your own python language server you can use that package.
 To see how the types are generated and how this might be done for other languages see [git repo](https://github.com/kieler/klighd-python-types).
