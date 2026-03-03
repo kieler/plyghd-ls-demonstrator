@@ -71,7 +71,7 @@ class PlyghdKgraphSynthesis:
 
 
         # a hierarchical node featuring a key rendering for smart zoom
-        # TODO: for this feature to work correctly, the client micro layout needs to set the text bounds properties.
+        # for this feature to work correctly, the client micro layout needs to set the text bounds properties.
         hierarchicalNode = createNode(root)
         hierarchicalNodeRect = addRectangle(hierarchicalNode)
         scalingText = addChildText(hierarchicalNodeRect, "Scaling Text")
